@@ -39,7 +39,8 @@ var Autocomplete = React.createClass({
       value: '',
       wrapperProps: {},
       wrapperStyle: {
-        display: 'inline-block'
+        display: 'inline-block',
+        position: 'relative'
       },
       inputProps: {},
       onChange: function onChange() {},
@@ -56,10 +57,9 @@ var Autocomplete = React.createClass({
         background: 'rgba(255, 255, 255, 0.9)',
         padding: '2px 0',
         fontSize: '90%',
-        position: 'fixed',
+        position: 'absolute',
         overflow: 'auto',
-        maxHeight: '50%' },
-      // TODO: don't cheat, let it flow to the bottom
+        maxHeight: '50vh' },
       autoHighlight: true,
       onMenuVisibilityChange: function onMenuVisibilityChange() {}
     };
@@ -236,12 +236,9 @@ var Autocomplete = React.createClass({
     var node = this.refs.input;
     var rect = node.getBoundingClientRect();
     var computedStyle = global.window.getComputedStyle(node);
-    var marginBottom = parseInt(computedStyle.marginBottom, 10) || 0;
     var marginLeft = parseInt(computedStyle.marginLeft, 10) || 0;
     var marginRight = parseInt(computedStyle.marginRight, 10) || 0;
     this.setState({
-      menuTop: rect.bottom + marginBottom,
-      menuLeft: rect.left + marginLeft,
       menuWidth: rect.width + marginLeft + marginRight
     });
   },
@@ -286,8 +283,6 @@ var Autocomplete = React.createClass({
       });
     });
     var style = {
-      left: this.state.menuLeft,
-      top: this.state.menuTop,
       minWidth: this.state.menuWidth
     };
     var menu = this.props.renderMenu(items, this.props.value, style);
